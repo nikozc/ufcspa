@@ -1,0 +1,16 @@
+Implementation Issues in Modern Cache Memory:
+a habilidade que o cache tem de melhorar o desempenho provém, principalmente, de dois fatores:
+    -tempo de acesso ao cache (access time)
+    -taxa das requisições à memória que podem ser encontradas na cache(hit ratio)
+o tempo de acesso é crítico para o primeiro nível (L1)
+CPU caches são normalmente memórias associativas
+cada 'entrada' na cache consiste de uma tag e um conjunto de dados
+
+
+Trace driven simulation in research on computer architecture and operating systems:
+a maior parte dos "cache miss" acontece durante a execução do sistema operacional (task switching effects)
+referencia vários artigos interessantes sobre cache
+
+
+Software-Based Self-Test of Set-Associative Cache Memories:
+explica de maneira detalhada o funcionamento da cache

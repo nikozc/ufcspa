@@ -1,0 +1,53 @@
+hipóteses para o trabalho(software):
+	-MMU é responsável pelo gerenciamento de memória
+	-CPU é indeferente ao funcionamento do MMU
+	-CPU só consegue utilizar dados armazenados na cache?
+	-várias camadas de cache?
+	-várias CPUs?
+
+requisitos impostos pelo cristiano:
+	-no momento da leitura da memória determinar se é hit ou miss
+	-verificar a validade dos valores armazenados em cache (precisamos descobrir como é feito o controle de consistência de dados)
+	-bit de validade deve ser atualizado antes de passar os dados para o processador
+	-na escrita, caso seja necessário, o algoritmo de substituição deve ser o LRU (por qual motivo?)
+	-apenas blocos alterados devem ser reescritos na memória principal
+	-os blocos devem possuir um bit de modificação
+
+assuntos que devem ser abordados no artigo:
+	-comparativo de performance entre algoritmos de substituição?
+
+o que precisa ser pesquisado:
+	-qual o funcionamento REAL das políticas de cache em um sistema MODERNO
+	-quais são as métricas que existem para medir performance de algoritmos de cache
+	-quais são os algoritmos modernos para gerenciamento de cache
+		-https://en.wikipedia.org/wiki/Cache_algorithms#Examples
+	-diferença de latência entre acesso a cache e "memória comum"
+	-como é feito o controle de consistência de dados
+
+artigos relevantes:
+	-The Performance Impact of Kernel Prefetching on Buffer Cache Replacement Algorithms
+		https://engineering.purdue.edu/~ychu/publications/sigm05_prefetch.pdf
+	-Program Counter Based Pattern Classification in Buffer Caching
+		https://engineering.purdue.edu/~ychu/publications/osdi04_pcc.pdf
+	-Design of CPU Cache Memories (1987!!)
+		http://www.eecs.berkeley.edu/Pubs/TechRpts/1987/CSD-87-357.pdf
+	-Functional Principles of Cache Memory
+		http://alasir.com/articles/cache_principles/
+	-ARC: A Self-Tuning, Low Overhead Replacement Cache
+		https://www.usenix.org/legacy/events/fast03/tech/full_papers/megiddo/megiddo.pdf
+	-materiais muito relevantes. aparentemente explicam o que ele não ensinou
+		funionamento do MMU		
+			-https://www.cs.tcd.ie/jeremy.jones/CS3021/4%20MMUs.pdf
+		funcionamento da cache
+			-https://www.scss.tcd.ie/Jeremy.Jones/CS3021/5%20caches.pdf
+	-aborda questões sobre como a arquitetura influencia a performance, COM EXEMPLOS REAIS
+->		Gallery of Processor Cache Effects
+->		http://igoro.com/archive/gallery-of-processor-cache-effects/
+	-http://apt.cs.manchester.ac.uk/COMP60011/UoM-COMP60011-2009-slides-day1-2.pdf
+	-Implementation Issues in Modern Cache Memory
+		http://oldwww.just.edu.jo/~ali/740/1-cache-implementation.pdf
+	-Tuning the cache memory usage in tomographic reconstruction on standard computers with Advanced Vector eXtensions (AVX)
+		http://www.sciencedirect.com/science/article/pii/S2352340915000025
+	-Trace driven simulation in research on computer architecture and operating systems
+		http://inst.cs.berkeley.edu/~cs162/sp09/Students/Readings/smith2.pdf
+	-Computer System Architecture (a partir da página 462)
