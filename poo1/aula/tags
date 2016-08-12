@@ -1,0 +1,29 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+Aplicacao	Aplicacao.java	/^public class Aplicacao {$/;"	c
+Carro	Carro.java	/^    public Carro( String motor, int ano, String fab) {$/;"	m	class:Carro
+Carro	Carro.java	/^public class Carro {$/;"	c
+Cliente	Cliente.java	/^    public Cliente( String nome, long cpf) {$/;"	m	class:Cliente
+Cliente	Cliente.java	/^    public Cliente() {$/;"	m	class:Cliente
+Cliente	Cliente.java	/^public class Cliente {$/;"	c
+anofab	Carro.java	/^    private int anofab;$/;"	f	class:Carro	file:
+cpf	Cliente.java	/^    private long cpf;$/;"	f	class:Cliente	file:
+fabricante	Carro.java	/^    private String fabricante;$/;"	f	class:Carro	file:
+getAno	Carro.java	/^    public int getAno() {$/;"	m	class:Carro
+getCpf	Cliente.java	/^    public long getCpf() {$/;"	m	class:Cliente
+getFabricante	Carro.java	/^    public String getFabricante() {$/;"	m	class:Carro
+getMotor	Carro.java	/^    public String getMotor() {$/;"	m	class:Carro
+getNome	Cliente.java	/^    public String getNome() {$/;"	m	class:Cliente
+main	Aplicacao.java	/^    public static void main ( String[] args) throws Exception {$/;"	m	class:Aplicacao
+motor	Carro.java	/^    private String motor;$/;"	f	class:Carro	file:
+nome	Cliente.java	/^    private String nome;$/;"	f	class:Cliente	file:
+setAnoFab	Carro.java	/^    public void setAnoFab( int anofab ) {$/;"	m	class:Carro
+setCpf	Cliente.java	/^    public void setCpf( long cpf ) {$/;"	m	class:Cliente
+setFabricante	Carro.java	/^    public void setFabricante( String fabricante ) {$/;"	m	class:Carro
+setMotor	Carro.java	/^    public void setMotor( String motor ) {$/;"	m	class:Carro
+setNome	Cliente.java	/^    public void setNome( String nome ) {$/;"	m	class:Cliente
+toString	Cliente.java	/^    public String toString(){$/;"	m	class:Cliente
