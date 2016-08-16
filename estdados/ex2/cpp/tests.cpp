@@ -27,3 +27,9 @@ TEST_CASE( "selection_sort()", "[listas]" ) {
     REQUIRE( selection_sort(bagunca[1]) == ordem[1]);
     REQUIRE( selection_sort(bagunca[2]) == ordem[2]);
 }
+
+TEST_CASE( "insertion_sort()", "[listas]" ) {
+    REQUIRE( insertion_sort(bagunca[0]) == ordem[0]);
+    REQUIRE( insertion_sort(bagunca[1]) == ordem[1]);
+    REQUIRE( insertion_sort(bagunca[2]) == ordem[2]);
+}

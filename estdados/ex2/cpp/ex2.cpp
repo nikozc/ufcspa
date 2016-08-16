@@ -128,3 +128,30 @@ std::vector<int> selection_sort( std::vector<int> vetor ) {
     }
     return vetor;
 }
+
+std::vector<int> insertion_sort( std::vector<int> vetor ) {
+    /* Este método de ordenação consiste em assumir que a primeira
+     * posição está ordenada e depois vai ordenando os demais valores
+     * presentes no vetor um a um, colocando cada um em seu devido lugar.
+     *
+     * Por questão de comodidade e perfoemance estamos utilizando a
+     * função std::swap() [http://www.cplusplus.com/reference/vector/vector/swap/]
+     * ela realiza a troca de dois elementos dentro de um vetor.
+     * Ela pode ser substituida pelo seguinte código:
+     *      temp = vetor[indice1];
+     *      vetor[indice1] = vetor[indice2];
+     *      vetor[indice2] = temp; */
+    int valor = vetor[0];
+    int j;
+    for ( int i = 1; i < vetor.size(); i++) {
+        valor = vetor[i];
+        j = i -1;
+        while ( j >= 0 ) {
+            if ( valor < vetor[j] ) {
+                std::swap( vetor[j], vetor[j+1] );
+            }
+            --j;
+        }
+    }
+    return vetor;
+}
