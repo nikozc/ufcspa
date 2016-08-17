@@ -1,21 +1,26 @@
 public class Lampada {
     private String estadoDaLampada;
-    public Lampada(String estado) {
-        this.estadoDaLampada = estado;
+    public Lampada() {
+        this.estadoDaLampada = "Apagada";
     }
     public void acende() {
-        this.estadoDaLampada = "ligada";
+        this.estadoDaLampada = "Acesa";
     }
 
     public void apaga() {
-        this.estadoDaLampada = "desligada";
+        this.estadoDaLampada = "Apagada";
     }
 
     public void mostraEstado() {
         System.out.println("A lampada está "+this.estadoDaLampada);
     }
 
+    //Isso não é uma boa ideia
     public String getEstado() {
         return this.estadoDaLampada;
+    }
+    
+    public String setEstado( String estado ) {
+        this.estadoDaLampada = estado;
     }
 }
