@@ -15,12 +15,13 @@ public class Lampada {
         System.out.println("A lampada está "+this.estadoDaLampada);
     }
 
+
+
     //Isso não é uma boa ideia
     public String getEstado() {
         return this.estadoDaLampada;
     }
-    
-    public String setEstado( String estado ) {
+    public setEstado( String estado ) {
         this.estadoDaLampada = estado;
     }
 }
