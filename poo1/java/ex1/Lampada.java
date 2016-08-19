@@ -21,7 +21,7 @@ public class Lampada {
     public String getEstado() {
         return this.estadoDaLampada;
     }
-    public setEstado( String estado ) {
+    public void setEstado( String estado ) {
         this.estadoDaLampada = estado;
     }
 }

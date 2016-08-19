@@ -35,4 +35,25 @@ public class RegistroAcademico {
         }
         return 0f;
     }
+
+    //Isso não é uma boa ideia
+    public String getNomeAluno() {
+        return this.nomeAluno;
+    }
+
+    public int getNumeroMatricula() {
+        return this.numeroMatricula;
+    }
+    public boolean getEBolsista() {
+        return this.eBolsista;
+    }
+    public void setNomeAluno( String nome ) {
+        this.nomeAluno = nome;
+    }
+    public void setNumeroMatricula( int numero ) {
+        this.numeroMatricula = numero;
+    }
+    public void setEBolsista( boolean bol ) {
+        this.eBolsista = bol;
+    }
 }

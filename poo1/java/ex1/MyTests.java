@@ -6,7 +6,7 @@ public class MyTests {
 
     @Test
     public  void Lampada_teste() {
-        Lampada tester = new Lampada( "desligada" );
+        Lampada tester = new Lampada( );
         assertEquals("init test", "desligada", tester.getEstado());
         tester.acende();
         assertEquals("acende test", "ligada", tester.getEstado());

@@ -41,7 +41,7 @@ public class ContaBancaria {
     public String getNomeCorrentista() {
         return this.nomeCorrentista;
     }
-    public bool getContaEspecial() {
+    public boolean getContaEspecial() {
         return this.contaEspecial;
     }
     public void setSaldo( float saldo ) {
@@ -50,7 +50,7 @@ public class ContaBancaria {
     public void setNomeCorrentista( String nome ) {
         this.nomeCorrentista = nome;
     }
-    public void setContaEspecial( bool conta ) {
+    public void setContaEspecial( boolean conta ) {
         this.contaEspecial = conta;
     }
 }
