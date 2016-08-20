@@ -14,6 +14,9 @@ public class Aplicacao {
     float alt = Float.parseFloat(br.readLine());
     System.out.println("Digite o peso:");
     float peso = Float.parseFloat(br.readLine());
+    Paciente p = new Paciente(nome, idade, end, alt, peso);
+    System.out.println(p);
+    System.out.println("O IMC do paciente é: "+p.obterIMC());
     }
 
 }
