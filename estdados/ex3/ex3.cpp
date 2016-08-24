@@ -3,12 +3,45 @@
 void logica_qs(std::vector<int>&,int,int);
 int divide(std::vector<int>&, int,int);
 
+std::vector<int> shell_sort( std::vector<int> vetor ) {
+    /* Este método de ordenação consiste em "dividir" o vetor em vaŕios
+     * sub-vetores e ordenar cada um destes sub-vetores ao invés de ordenar
+     * todo o vetor de uma vez só.
+     *
+     * A ideia principal para a motivação deste método é que esses sub-vetores
+     * estão, em geral, quase ordenado. O que torna o método bastante eficiente.
+     *
+     * Por questão de comodidade e performance estamos utilizando a
+     * função std::swap() [http://www.cplusplus.com/reference/vector/vector/swap/]
+     * ela realiza a troca de dois elementos dentro de um vetor.
+     * Ela pode ser substituida pelo seguinte código:
+     *      temp = vetor[indice1];
+     *      vetor[indice1] = vetor[indice2];
+     *      vetor[indice2] = temp; */
+
+    std::vector<int> intervalos = {701, 301, 132, 57, 23, 10, 4, 1};
+    for ( int intervalo:intervalos ) {
+        if ( intervalo < vetor.size() ) {
+            for (int i = intervalo; i < vetor.size(); i += 1){
+                int temp = vetor[i];
+                int j =0;
+                for ( j=i; j>=intervalo; j-=intervalo) {
+                    if ( vetor[j-intervalo] > temp) {
+                        std::swap(vetor[j], vetor[j-intervalo]);
+                    }
+                }
+            }
+        }
+    }
+    return vetor;
+}
+
 std::vector<int> bubble_sort( std::vector<int> vetor ){
     /* Este método de ordenação consiste em realizar a comparação
      * de todos os pares adjacentes do vetor e realizar as trocas
      * de forma que cada par fique ordenado.
      *
-     * Por questão de comodidade e perfoemance estamos utilizando a
+     * Por questão de comodidade e performance estamos utilizando a
      * função std::swap() [http://www.cplusplus.com/reference/vector/vector/swap/]
      * ela realiza a troca de dois elementos dentro de um vetor.
      * Ela pode ser substituida pelo seguinte código:
@@ -17,8 +50,8 @@ std::vector<int> bubble_sort( std::vector<int> vetor ){
      *      vetor[indice2] = temp; */
 
     bool f = false;
-    for( __gnu_cxx::size_t i=0; i< vetor.size(); i++) {
-        for( __gnu_cxx::size_t  j=0; j < ( vetor.size()-1 ); j++) {
+    for( int i=0; i< vetor.size(); i++) {
+        for( int j=0; j < ( vetor.size()-1 ); j++) {
             if ( vetor[j] > vetor[j+1] ) {
                 std::swap(vetor[j+1], vetor[j]);
                 f = true;
@@ -57,7 +90,7 @@ std::vector<int> quick_sort( std::vector<int> &vetor ) {
      * do código seria um pouco maior e também perderiamos um pouco
      * de flexibilidade.
      *
-     * Por questão de comodidade e perfoemance estamos utilizando a
+     * Por questão de comodidade e performance estamos utilizando a
      * função std::swap() [http://www.cplusplus.com/reference/vector/vector/swap/]
      * ela realiza a troca de dois elementos dentro de um vetor.
      * Ela pode ser substituida pelo seguinte código:
@@ -107,7 +140,7 @@ std::vector<int> selection_sort( std::vector<int> vetor ) {
      * Uma vantegem dele é que a cada iteração ele precisa realizar um
      * número menor de comparações.
      *
-     * Por questão de comodidade e perfoemance estamos utilizando a
+     * Por questão de comodidade e performance estamos utilizando a
      * função std::swap() [http://www.cplusplus.com/reference/vector/vector/swap/]
      * ela realiza a troca de dois elementos dentro de um vetor.
      * Ela pode ser substituida pelo seguinte código:
@@ -134,7 +167,7 @@ std::vector<int> insertion_sort( std::vector<int> vetor ) {
      * posição está ordenada e depois vai ordenando os demais valores
      * presentes no vetor um a um, colocando cada um em seu devido lugar.
      *
-     * Por questão de comodidade e perfoemance estamos utilizando a
+     * Por questão de comodidade e performance estamos utilizando a
      * função std::swap() [http://www.cplusplus.com/reference/vector/vector/swap/]
      * ela realiza a troca de dois elementos dentro de um vetor.
      * Ela pode ser substituida pelo seguinte código:

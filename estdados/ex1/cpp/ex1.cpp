@@ -1,5 +1,5 @@
 #include <vector>
-#include "../catch.hpp"
+#include "../../catch.hpp"
 
 int contaElementosNegativos( std::vector<int> vetor ){
     int contadorNegativos = 0;
@@ -34,7 +34,7 @@ int retornaPosicaoMaiorElemento( std::vector<int> vetor ){
     /* A contagem do indice começa no 0 (zero) */
     int posicao = 0;
     int maior = vetor[0];
-    for(int i=0; i<vetor.size(); i++) {
+    for(size_t i=0; i<vetor.size(); i++) {
         if (vetor[i] > maior) {
             maior = vetor[i];
             posicao = i;
