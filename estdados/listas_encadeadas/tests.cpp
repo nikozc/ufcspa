@@ -3,10 +3,6 @@
 #include "../catch.hpp"
 #include "ex3.cpp"
 
-std::vector<std::vector<int>> listas = {{0, 1, -2, 3, -4},
-                                        {0, 0, 0, 0},
-                                        {-1, -1, -1, -1, -1, -1}};
-
 
 TEST_CASE( "Testa repr", "[repr]" ) {
     ListaDupla l;
@@ -96,19 +92,12 @@ TEST_CASE( "Testa remocao", "[remocao]" ) {
     std::vector<int> v = l.get_vector_repr();
     std::vector<int> r = {1, 2, 3, 4};
     REQUIRE( v == r);
-    /* Remoção no inicio */
     l.del_node(0);
     r = { 2, 3, 4 };
     v = l.get_vector_repr();
     REQUIRE( v == r);
-    /* Remoção no meio */
     l.del_node(1);
-    r = { 2, 4 };
-    v = l.get_vector_repr();
-    REQUIRE( v == r);
-    /* Remoção no final */
-    l.del_node(1);
-    r = { 2 };
+    r = { 2, 3 };
     v = l.get_vector_repr();
     REQUIRE( v == r);
 }

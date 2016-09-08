@@ -120,6 +120,31 @@ class ListaDupla {
          * c.anterior = a; 
          * a <=> c */
         No* remocao;
+        if ((pos == 0) || (pos == tam-1)){
+            remocao = get_node(pos);
+            if (pos == 0) {
+                /* Removendo o primeiro elemento */
+                inicio = remocao->get_proximo();
+                remocao->get_proximo()->set_anterior(nullptr);
+            }
+            else {
+                /* Removendo o último elemento */
+                if ( remocao != nullptr ) {
+                    remocao->get_anterior()->set_proximo(nullptr);
+                }
+            }
+        }
+        tam--;
+        return true;
+    }
+
+    bool del_node2 ( int pos ) {
+        /* Deve haver uma maneira melhor de fazer isso! */
+        /* a <=> b <=> c
+         * a.proximo = c;
+         * c.anterior = a; 
+         * a <=> c */
+        No* remocao;
         if ((pos > 0) && (pos < tam-1)){
             remocao = get_node(pos);
             No* tmp = remocao->get_proximo();
