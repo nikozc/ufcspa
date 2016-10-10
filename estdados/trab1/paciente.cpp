@@ -100,7 +100,7 @@ std::ostream & operator<<(std::ostream & os, Paciente & p)
    os << "\t RG: " << p.get_rg()<< '\n';
    os << "\t CPF: " << p.get_cpf()<< '\n';
    os << "\t Ano de nascimento: " << p.get_ano() << '\n';
-   os << "\t Ano de nascimento: " << p.get_prioridade();
+   os << "\t Atendimento prioritário: " << p.get_prioridade();
    os << std::endl;
    return os;
 }
@@ -133,16 +133,103 @@ class UBS {
 			/* Pesquisar requisicao pelo cpf do paciente */
 			std::cout << cpf;
 			return true;
-		}
+                }
 };
 
+Paciente pesquisar_paciente( std::vector<Paciente> pacientes_cadastrados , std::string cpf) {
+	/* std::cin >> cpf; */
+    std::cout << "procurando por " << cpf << std::endl;
+	for (auto p : pacientes_cadastrados) {
+		if (p.get_cpf() == cpf) {
+			std::cout << p;
+			std::cout << "Os dados do paciente estão corretos?(s/n)" << std::endl;
+			std::string resp;
+			std::cin >> resp;
+			if (resp == "n") {
+                throw std::invalid_argument("Paciente errado");
+                /* return false; */
+            }
+            else if ( resp == "s") {
+                return p;
+            }
+		}
+	}
+    /* Paciente não encontrado */
+	/* return false; */
+    throw std::invalid_argument("Paciente não encontrado");
+}
+
+Paciente criar_paciente( std::string cpf ) {
+    std::string n, nm, rg, ano;
+    /* int a_nasc; */
+    std::cout << "Nome:" << std::endl;
+    getline(std::cin, n);
+    
+    /* std::cin >> n; */
+    std::cout << "Nome da mãe:" << std::endl;
+    getline(std::cin, nm);
+    /* std::cin >> nm; */
+    std::cout << "RG:" << std::endl;
+    getline(std::cin, rg);
+    /* std::cin >> rg; */
+    std::cout << "CPF:" << cpf << std::endl;
+    /* getline(std::cin, cpf); */
+    /* std::cin >> cpf; */
+    std::cout << "Ano de nascimento:" << std::endl;
+    getline(std::cin, ano);
+    /* std::cin >> a_nasc; */
+    try {
+        /* std::cout << "dados entrados" << std::endl; */
+        /* std::cout << n << std::endl;// << nm<< std::endl  << rg<< std::endl  << cpf<< std::endl  << ano << std::endl ; */
+        Paciente pp(n, nm, rg, cpf, stoi(ano));
+        return pp;
+    }
+    catch(std::invalid_argument& e) {
+        throw std::invalid_argument("Paciente não pode ser criado");
+    }
+}
+
 int main(){
-	try {
-		Paciente pp("1", "asdd, dsa", "00", "11", 1990);
-	std::cout << pp;
+	bool stop;
+	stop = false;
+	std::vector<Paciente> pacientes_cadastrados;
+	std::cout << "Sistema de gerenciamento de filas de UBS" << std::endl;
+	std::cout << "1 - Registrar chegada" << std::endl;
+	while (!stop){
+		std::cout << "Digite a opção desejada:" << std::endl;
+		/* int a; */
+        std::string a;
+        getline(std::cin, a);
+		/* std::cin >> a; */
+        std::cout << "voce escolheu " << a << std::endl;
+        std::string cpf;
+		if (a == "1") {
+            try {
+                /* Paciente paciente; */
+	std::cout << "Digite o CPF do paciente:" << std::endl;
+    getline(std::cin, cpf);
+                auto paciente = pesquisar_paciente( pacientes_cadastrados, cpf);
+            }
+            catch(std::invalid_argument& e) {
+                /* Paciente novo; */
+                auto novo = criar_paciente(cpf);
+                pacientes_cadastrados.push_back(novo);
+            }
+		}	
+        if (a == "0") {
+            stop = true;
+        }
+		/* try { */
+
+		/* 	Paciente pp("1", "asdd, dsa", "00", "11", 1990); */
+		/* 	std::cout << pp; */
+		/* } */
+		/* catch(std::invalid_argument& e) { */
+		/* 	std::cerr << e.what() << std::endl; */
+		/* } */
 	}
-	catch(std::invalid_argument& e) {
-		std::cerr << e.what() << std::endl;
-	}
+	for (auto p : pacientes_cadastrados) {
+        std::cout << p;
+    }
     return 0;
 }
