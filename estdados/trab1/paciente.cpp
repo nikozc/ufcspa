@@ -124,6 +124,10 @@ class Requisicao {
             return paciente.get_nome();
         }
 
+        int get_id_especialidade() {
+            return especialidade;
+        }
+
         std::string get_nome_especialidade() {
             if ( especialidade == 0 ) {
                 return "Triagem";
@@ -222,6 +226,44 @@ class UBS {
         void print_requesicao( int posicao) {
             std::cout << fila[posicao] << '\n';
         }
+
+        int contar_prioridades ( int esp ) {
+            int cont=0;
+            for (auto e: fila) {
+                if (e.get_id_especialidade() == esp) {
+                    if (e.get_prioridade() == "Sim") {
+                        cont ++;
+                    }
+                }
+            }
+            return cont;
+        }
+
+        void chamar_paciente( int esp ) {
+            int cont =0;
+            int pri =0;
+            pri = contar_prioridades(esp);
+            for (auto e: fila) {
+                cont ++;
+                if ( pri > 0) {
+                    if (e.get_prioridade() == "Não") {
+                        continue;
+                    }
+                    else {
+                        std::cout << "Chamando paciente prioritário";
+                        std::cout << e;
+                        fila.erase(fila.begin()+(cont-1)); 
+                        break;
+                    }
+                }
+                else if (e.get_id_especialidade() == esp) {
+                    std::cout << "chamando paciente \n";
+                    std::cout << e;
+                    fila.erase(fila.begin()+cont); 
+                    break;
+                }
+            }
+        }
 };
 
 UBS::UBS() {} ;
@@ -311,6 +353,7 @@ int main(){
         std::cout << "1 - Registrar chegada" << std::endl;
         std::cout << "2 - Consultar fila da UBS" << std::endl;
         std::cout << "3 - Desistir da fila" << std::endl;
+        std::cout << "4 - Chamar paciente" << std::endl;
         std::cout << "0 - Finalizar operação" << std::endl;
         std::cout << " --- " << std::endl;
 		std::cout << "Digite a opção desejada:" << std::endl;
@@ -366,6 +409,16 @@ int main(){
             else {
                 continue;
             }
+        }
+		if (a == "4") {
+            std::cout << "Digite a especialidade que você está chamando: " << '\n';
+            std::cout << "1 - Oftamologia" << '\n';
+            std::cout << "2 - Clinica geral" << '\n';
+            std::cout << "3 - Pediatria" << '\n';
+            std::cout << "0 - Triagem" << '\n';
+            std::string esp;
+            getline(std::cin, esp);
+            unidade.chamar_paciente(stoi(esp));
         }
         if (a == "0") {
             stop = true;
