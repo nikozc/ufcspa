@@ -2,6 +2,7 @@
 #include <vector>
 #include <exception>
 #include <locale> //isdigit
+#include <iomanip>
 /* #include <boost/regex.hpp> */
 
 class Paciente {
@@ -147,6 +148,10 @@ class Requisicao {
                 return "Não";
             }
         }
+
+        std::string get_cpf_paciente() {
+            return paciente.get_cpf();
+        }
 };
 Requisicao::Requisicao() {};
 
@@ -169,6 +174,7 @@ class UBS {
          * apenas uma lista. Desta forma seria muito mais simples adicionar
          * ou remover especialidades no futuro.*/
 		std::vector<Requisicao> fila;
+        std::vector<std::string> registro;
 	public:
 		UBS();
 		bool entrar_na_fila( Requisicao r ) {
@@ -176,11 +182,30 @@ class UBS {
 			return true;
 		}
 
-		bool desistir_da_fila( std::string cpf ) {
+		bool desistir_da_fila( int posicao ) {
 			/* Pesquisar requisicao pelo cpf do paciente */
-			std::cout << cpf;
+            auto t = std::time(nullptr);
+            auto tm = *std::localtime(&t);
+
+            std::ostringstream oss;
+            oss << std::put_time(&tm, "%d-%m-%Y %H:%M:%S");
+            auto str = oss.str();
+
+            std::cout << str << std::endl;
+			std::cout << fila[posicao].get_nome_paciente();
+            fila.erase(fila.begin()+posicao); 
 			return true;
+        }
+
+        int find_position(std::string cpf) {
+            int cont =0;
+            for (auto e: fila) {
+                if (e.get_cpf_paciente() == cpf ) {
+                    return cont;
                 }
+                cont ++;
+            }
+        }
         void imprimir_fila() {
             std::cout << "Fila de espera desta UBS" << '\n';
             std::cout << " ------ \n";
@@ -188,6 +213,15 @@ class UBS {
                 std::cout << e;
             }
         };
+        Requisicao get_requisicao( std::string cpf ) {
+
+            auto x = find_position(cpf);
+            return fila[x];
+        }
+
+        void print_requesicao( int posicao) {
+            std::cout << fila[posicao] << '\n';
+        }
 };
 
 UBS::UBS() {} ;
@@ -276,6 +310,8 @@ int main(){
 		std::cout << "== Você está no menu principal ==" << std::endl;
         std::cout << "1 - Registrar chegada" << std::endl;
         std::cout << "2 - Consultar fila da UBS" << std::endl;
+        std::cout << "3 - Desistir da fila" << std::endl;
+        std::cout << "0 - Finalizar operação" << std::endl;
         std::cout << " --- " << std::endl;
 		std::cout << "Digite a opção desejada:" << std::endl;
 		/* int a; */
@@ -313,6 +349,23 @@ int main(){
 		}
 		if (a == "2") {
             unidade.imprimir_fila();
+        }
+		if (a == "3") {
+            std::cout << "Digite o cpf do paciente que deseja desistir da fila\n";
+            std::string cpf;
+            getline(std::cin, cpf);
+            /* auto r = unidade.get_requisicao(cpf); */
+            auto s = unidade.find_position(cpf);
+            unidade.print_requesicao(s);
+            std::cout << "Confirmar desistência?(sim/nao)\n";
+            std::string resp;
+            getline(std::cin, resp);
+            if (resp == "sim" ) {
+                unidade.desistir_da_fila(s);
+            }
+            else {
+                continue;
+            }
         }
         if (a == "0") {
             stop = true;
