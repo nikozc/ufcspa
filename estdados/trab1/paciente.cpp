@@ -110,18 +110,19 @@ std::ostream & operator<<(std::ostream & os, Paciente & p)
 
 class Requisicao {
     private:
-        Paciente paciente;
+        Paciente* paciente;
         bool prioritaria;
         int especialidade;
     public:
         Requisicao();
+        Requisicao( const Requisicao &obj);
         Requisicao( Paciente pac, bool p, int esp) {
-            paciente = pac;
+            paciente = &pac;
             prioritaria = p;
             especialidade = esp;
     }
         std::string get_nome_paciente() {
-            return paciente.get_nome();
+            return paciente->get_nome();
         }
 
         int get_id_especialidade() {
@@ -145,7 +146,7 @@ class Requisicao {
         }
 
         std::string get_prioridade() {
-            if (paciente.get_prioridade() ) {
+            if (paciente->get_prioridade() ) {
                 return "Sim";
             }
             else {
@@ -154,10 +155,16 @@ class Requisicao {
         }
 
         std::string get_cpf_paciente() {
-            return paciente.get_cpf();
+            return paciente->get_cpf();
         }
 };
 Requisicao::Requisicao() {};
+Requisicao::Requisicao(const Requisicao &obj)
+{
+    paciente = obj.paciente;
+    especialidade = obj.especialidade;
+    prioritaria = obj.prioritaria;
+}
 
 std::ostream & operator<<(std::ostream & os, Requisicao & p)
 {
@@ -178,7 +185,7 @@ class UBS {
          * apenas uma lista. Desta forma seria muito mais simples adicionar
          * ou remover especialidades no futuro.*/
 		std::vector<Requisicao> fila;
-        std::vector<std::string> registro;
+        std::vector<Requisicao> registro;
 	public:
 		UBS();
 		bool entrar_na_fila( Requisicao r ) {
@@ -210,12 +217,29 @@ class UBS {
                 cont ++;
             }
         }
+
         void imprimir_fila() {
-            std::cout << "Fila de espera desta UBS" << '\n';
-            std::cout << " ------ \n";
+            std::cout << "Digite a fila que deseja verificar: \n";
+            std::cout << "1 - Oftamologia" << '\n';
+            std::cout << "2 - Clinica geral" << '\n';
+            std::cout << "3 - Pediatria" << '\n';
+            std::cout << "0 - Triagem" << '\n';
+            std::string resp;
+            getline(std::cin, resp);
+            /* std::cout << "Fila de espera desta UBS" << '\n'; */
+            /* std::cout << " ------ \n"; */
+            int cont =0;
+            int pri =0;
             for (auto e: fila) {
-                std::cout << e;
+                if ( e.get_id_especialidade() == stoi(resp)){
+                    cont ++;
+                    if ( e.get_prioridade() == "Sim") {
+                        pri ++;
+                    }
+                }
             }
+            std::cout << "A fila selecionada tem " << cont << " pacientes na fila, \n";
+            std::cout << "dos quais " << pri << " são de atendimento prioritário. \n";
         };
         Requisicao get_requisicao( std::string cpf ) {
 
@@ -239,6 +263,18 @@ class UBS {
             return cont;
         }
 
+        bool autenticar() {
+            std::cout << "Digite a senha:";
+            std::string senha;
+            getline(std::cin, senha);
+            if ( senha == "123" ) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
         void chamar_paciente( int esp ) {
             int cont =0;
             int pri =0;
@@ -252,15 +288,46 @@ class UBS {
                     else {
                         std::cout << "Chamando paciente prioritário";
                         std::cout << e;
-                        fila.erase(fila.begin()+(cont-1)); 
+                        /* std::move(fila.begin()+(cont-1), fila.begin()+(cont), std::back_inserter(registro)); */
+                        auto qwe = Requisicao(fila[cont-1]);
+                        registro.push_back(qwe);
+                        fila.erase(fila.begin()+(cont-1));
+                        /* registrar_atendimento(fila[cont-1]); */
+                        /* fila.erase(fila.begin()+(cont-1)); */ 
                         break;
                     }
                 }
                 else if (e.get_id_especialidade() == esp) {
                     std::cout << "chamando paciente \n";
                     std::cout << e;
+                    /* std::move(fila.begin()+(cont), fila.begin()+(cont+1), std::back_inserter(registro)); */
+                    Requisicao qwe = Requisicao(fila[cont]);
+                    registro.push_back(qwe);
+                    /* registrar_atendimento(fila[cont]); */
                     fila.erase(fila.begin()+cont); 
                     break;
+                }
+            }
+        }
+
+        void registrar_atendimento( Requisicao req ) {
+            registro.push_back( req );
+        }
+
+        void listar_atendimentos ( int qte ) {
+            std::cout << " listando atendimentos \n";
+            for ( auto r:registro) {
+                std::cout << r;
+            }
+            if (qte < registro.size() ) {
+                for ( int i=0; i<qte; i++ ) {
+                    std::cout << registro[registro.size()-i];
+                }
+            }
+            else {
+                /* for (auto e: registro) { */
+                for (auto e = registro.rbegin(); e != registro.rend(); ++e) {
+                    std::cout << *e;
                 }
             }
         }
@@ -354,6 +421,8 @@ int main(){
         std::cout << "2 - Consultar fila da UBS" << std::endl;
         std::cout << "3 - Desistir da fila" << std::endl;
         std::cout << "4 - Chamar paciente" << std::endl;
+        std::cout << "5 - Listar atendimentos" << std::endl;
+        std::cout << "6 - Listar pacientes cadastrados" << std::endl;
         std::cout << "0 - Finalizar operação" << std::endl;
         std::cout << " --- " << std::endl;
 		std::cout << "Digite a opção desejada:" << std::endl;
@@ -411,14 +480,41 @@ int main(){
             }
         }
 		if (a == "4") {
-            std::cout << "Digite a especialidade que você está chamando: " << '\n';
-            std::cout << "1 - Oftamologia" << '\n';
-            std::cout << "2 - Clinica geral" << '\n';
-            std::cout << "3 - Pediatria" << '\n';
-            std::cout << "0 - Triagem" << '\n';
-            std::string esp;
-            getline(std::cin, esp);
-            unidade.chamar_paciente(stoi(esp));
+            bool auth = false;
+            auth = unidade.autenticar();
+            if (auth) {
+                std::cout << "Digite a especialidade que você está chamando: " << '\n';
+                std::cout << "1 - Oftamologia" << '\n';
+                std::cout << "2 - Clinica geral" << '\n';
+                std::cout << "3 - Pediatria" << '\n';
+                std::cout << "0 - Triagem" << '\n';
+                std::string esp;
+                getline(std::cin, esp);
+                unidade.chamar_paciente(stoi(esp));
+            }
+            else {
+                std::cout << "Senha errada";
+            }
+        }
+        if (a == "5") {
+            bool auth = false;
+            auth = unidade.autenticar();
+            if (auth) {
+                unidade.listar_atendimentos(0);
+            }
+            else {
+                std::cout << "Senha errada";
+            }
+        }
+        if (a == "6") {
+            bool auth = false;
+            auth = unidade.autenticar();
+            if (auth) {
+                unidade.listar_atendimentos(10);
+            }
+            else {
+                std::cout << "Senha errada";
+            }
         }
         if (a == "0") {
             stop = true;
