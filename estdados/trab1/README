@@ -1,31 +1,11 @@
-Este documento contém uma breve explicação sobre o funcionamento
-deste software, bem como sobre algumas decisões técnicas que foram tomadas.
+Este documento contém uma breve explicação sobre o funcionamento deste software, bem como sobre algumas decisões técnicas que foram tomadas.
 
-Pode ser ter uma idéia da organização dos componentes deste sistema através
-da imagem que se encontra neste mesmo diretório. Lá estão representadas as
-pricipais classes com seus métodos relevantes em um formato parecido com o UML.
+Pode ser ter uma idéia da organização dos componentes deste sistema através da imagem que se encontra neste mesmo diretório. Lá estão representadas as pricipais classes com seus métodos relevantes em um formato parecido com o UML.
 
-Todo o funcionamento do software depende depende basicamente da interação das
-classes Paciente, Requisicao e UBS.
+Todo o funcionamento do software depende depende basicamente da interação das classes Paciente, Requisicao e UBS.
 
-No documento de especificação deste software não havia nenhuma exigência explícita
-à existência de uma classe própria para a unidade básica de saude(UBS), entretanto
-durante nosso ciclo de planejamento tomamos a decisão de incluir ela. A argumentação
-de suporte foi a de que o overhead gerado por essa inclusão seria praticamente nulo
-enquanto permitiria uma melhor organização lógica do código e além disso se houvesse
-uma expansão no software seriam necessárias menos mudanças, o que sempre é uma
-coisa boa.
+No documento de especificação deste software não havia nenhuma exigência explícita à existência de uma classe própria para a unidade básica de saude(UBS), entretanto durante nosso ciclo de planejamento tomamos a decisão de incluir ela. A argumentação de suporte foi a de que o overhead gerado por essa inclusão seria praticamente nulo enquanto permitiria uma melhor organização lógica do código e além disso se houvesse uma expansão no software seriam necessárias menos mudanças, o que sempre é uma coisa boa.
 
-A classe Paciente é tudo aquilo que se espera de uma classe com este nome. Ela tem a
-responsabilidade sobre os dados dos pacientes e também sobre operações realizadas
-com eles. A principal discussão que houve durante o planejamento dela é a questão da
-validação dos dados. Isso deveria ser responsabilidade? O principal argumento contrário
-foi o de que possivelmente haveria mais validações a serem feitas e se todas fossem
-realizadas no mesmo lugar isso seria uma vantagem muito grande. Depois de alguma
-análise chegou-se à conclusão de que só seriam feitas validações muitos básicas nos
-dados dos pacientes e por isso não haveria nenhum mal em deixar a validação sobre
-responsabilidade da classe Paciente.
+A classe Paciente é tudo aquilo que se espera de uma classe com este nome. Ela tem a responsabilidade sobre os dados dos pacientes e também sobre operações realizadas com eles. A principal discussão que houve durante o planejamento dela é a questão da validação dos dados. Isso deveria ser responsabilidade? O principal argumento contrário foi o de que possivelmente haveria mais validações a serem feitas e se todas fossem realizadas no mesmo lugar isso seria uma vantagem muito grande. Depois de alguma análise chegou-se à conclusão de que só seriam feitas validações muitos básicas nos dados dos pacientes e por isso não haveria nenhum mal em deixar a validação sobre responsabilidade da classe Paciente.
 
-Por fim a classe Requisicao é responsável por manter o elo entre o paciente e a entrada
-na fila. Isso é importante porque permite que um mesmo paciente possa estar em mais de uma
-fila sem que seja necessário duplicar as informações em momória.
+Por fim a classe Requisicao é responsável por manter o elo entre o paciente e a entrada na fila. Isso é importante porque permite que um mesmo paciente possa estar em mais de uma fila sem que seja necessário duplicar as informações em momória.
