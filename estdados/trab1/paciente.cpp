@@ -42,7 +42,7 @@ class Paciente {
 				return true;
 			}
 			else {
-				throw std::invalid_argument("Nome inválido"); 
+				throw std::invalid_argument("Nome inválido");
 			}
 			return false;
 		}
@@ -218,6 +218,7 @@ class UBS {
                 }
                 cont ++;
             }
+            throw std::invalid_argument(std::string("Paciente não encontrado"));
         }
 
         void imprimir_fila() {
@@ -313,21 +314,18 @@ class UBS {
 
         void listar_atendimentos ( int qte ) {
             std::cout << "Listando os últimos " << qte << " atendimentos realizados.\n";
-            if (qte < registro.size() ) {
-                std::cout << "menor \n";
-                    int xx;
-                for ( int i=0; i<(qte); i++ ) {
-                    xx = registro.size()-(i+1);
-                    std::cout << "aljfd " << xx << '\n';
-                    std::cout << registro[xx];
+                if (qte < registro.size() ) {
+                        int xx;
+                    for ( int i=0; i<(qte); i++ ) {
+                        xx = registro.size()-(i+1);
+                        std::cout << registro[xx];
+                    }
                 }
-            }
-            else {
-                std::cout << "maior \n";
-                for (auto e = registro.rbegin(); e != registro.rend(); ++e) {
-                    std::cout << *e;
+                else {
+                    for (auto e = registro.rbegin(); e != registro.rend(); ++e) {
+                        std::cout << *e;
+                    }
                 }
-            }
         }
 };
 
@@ -391,10 +389,44 @@ Requisicao criar_requisicao( Paciente pac ) {
     return Requisicao(pac, pac.get_prioridade(), 0 );
 }
 
+std::vector<Paciente> insertion_sort( std::vector<Paciente> vetor ) {
+    /* Este método de ordenação consiste em assumir que a primeira
+     * posição está ordenada e depois vai ordenando os demais valores
+     * presentes no vetor um a um, colocando cada um em seu devido lugar.
+     *
+     * Por questão de comodidade e performance estamos utilizando a
+     * função std::swap() [http://www.cplusplus.com/reference/vector/vector/swap/]
+     * ela realiza a troca de dois elementos dentro de um vetor.
+     * Ela pode ser substituida pelo seguinte código:
+     *      temp = vetor[indice1];
+     *      vetor[indice1] = vetor[indice2];
+     *      vetor[indice2] = temp; */
+    /* int valor = vetor[0]; */
+    std::string valor = vetor[0].get_nome();
+    int j;
+    for ( int i = 1; i < vetor.size(); i++) {
+        std::string valor = vetor[i].get_nome();
+        /* valor = vetor[i]; */
+        j = i -1;
+        while ( j >= 0 ) {
+            if ( valor < vetor[j].get_nome() ) {
+                std::swap( vetor[j], vetor[j+1] );
+            }
+            --j;
+        }
+    }
+    return vetor;
+}
+
 int main(){
 	bool stop;
 	stop = false;
 
+    /* std::string asd = "A Barraca"; */
+    /* std::string asd2 = "Barco"; */
+    /* if (asd < asd2) { */
+    /*     std::cout << "monenolkajfsdlfj"; */
+    /* } */
 	std::vector<Paciente> pacientes_cadastrados;
     UBS unidade;
 	std::cout << "Sistema de gerenciamento de filas de UBS" << std::endl;
@@ -441,16 +473,21 @@ int main(){
             std::cout << "Digite o cpf do paciente que deseja desistir da fila\n";
             std::string cpf;
             getline(std::cin, cpf);
-            auto s = unidade.find_position(cpf);
-            unidade.print_requesicao(s);
-            std::cout << "Confirmar desistência?(sim/nao)\n";
-            std::string resp;
-            getline(std::cin, resp);
-            if (resp == "sim" ) {
-                unidade.desistir_da_fila(s);
+            try {
+                auto s = unidade.find_position(cpf);
+                unidade.print_requesicao(s);
+                std::cout << "Confirmar desistência?(sim/nao)\n";
+                std::string resp;
+                getline(std::cin, resp);
+                if (resp == "sim" ) {
+                    unidade.desistir_da_fila(s);
+                }
+                else {
+                    continue;
+                }
             }
-            else {
-                continue;
+            catch(std::invalid_argument& e) {
+                std::cout << "Paciente não está na fila!\n";
             }
         }
 		if (a == "4") {
@@ -479,7 +516,10 @@ int main(){
                 std::cout << "Digite quantos registros você deseja ver \n";
                 std::string qqq;
                 getline(std::cin, qqq);
+            if (stoi(qqq) > 0) {
                 unidade.listar_atendimentos(stoi(qqq));
+            }
+            std::cout << "O valor deve ser positivo\n";
             }
             else {
                 std::cout << "Senha errada";
@@ -490,7 +530,9 @@ int main(){
             auth = unidade.autenticar();
             if (auth) {
                 std::cout << "Pacientes cadastrados nesta unidade: \n";
-                for (auto p: pacientes_cadastrados) {
+                std::vector<Paciente> w;
+                w = insertion_sort(pacientes_cadastrados);
+                for (auto p: w) {
                     std::cout << p;
                 }
             }
