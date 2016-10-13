@@ -3,13 +3,11 @@
 #include <exception>
 #include <locale> //isdigit
 #include <iomanip>
-/* #include <boost/regex.hpp> */
 
 class Paciente {
     private:
         std::string nome;
         std::string nome_mae;
-        //guardar o RG em uma string pode ser um tiro no pé...
         std::string rg;
         std::string cpf;
         int ano_nasc;
@@ -230,8 +228,6 @@ class UBS {
             std::cout << "0 - Triagem" << '\n';
             std::string resp;
             getline(std::cin, resp);
-            /* std::cout << "Fila de espera desta UBS" << '\n'; */
-            /* std::cout << " ------ \n"; */
             int cont =0;
             int pri =0;
             for (auto e: fila) {
@@ -280,7 +276,6 @@ class UBS {
         }
 
         Requisicao chamar_paciente( int esp ) {
-        /* void chamar_paciente( int esp ) { */
             int cont =0;
             int pri =0;
             pri = contar_prioridades(esp);
@@ -293,27 +288,17 @@ class UBS {
                     else {
                         std::cout << "Chamando paciente prioritário";
                         std::cout << e;
-                        /* std::move(fila.begin()+(cont-1), fila.begin()+(cont), std::back_inserter(registro)); */
                         Requisicao qwe = criar_requisicao(e.get_paciente(), e.get_id_especialidade());
-                        /* auto qwe = Requisicao(fila[cont-1]); */
-                        /* registro.push_back(qwe); */
                         fila.erase(fila.begin()+(cont-1));
-                        /* registrar_atendimento(fila[cont-1]); */
-                        /* fila.erase(fila.begin()+(cont-1)); */ 
-                        break;
+                        return qwe;
                     }
                 }
                 else if (e.get_id_especialidade() == esp) {
                     std::cout << "chamando paciente \n";
                     std::cout << e;
-                    /* std::move(fila.begin()+(cont), fila.begin()+(cont+1), std::back_inserter(registro)); */
-                    /* Requisicao qwe = Requisicao(fila[cont]); */
                     Requisicao qwe = criar_requisicao(e.get_paciente(), e.get_id_especialidade());
-                    /* registro.push_back(qwe); */
-                    /* registrar_atendimento(fila[cont]); */
                     fila.erase(fila.begin()+cont); 
                     return qwe;
-                    /* break; */
                 }
             }
         }
@@ -327,17 +312,18 @@ class UBS {
         }
 
         void listar_atendimentos ( int qte ) {
-            std::cout << "Listando os últimos " << qte << " atendimentos realizados.";
-            /* for ( auto r:registro) { */
-            /*     std::cout << r; */
-            /* } */
+            std::cout << "Listando os últimos " << qte << " atendimentos realizados.\n";
             if (qte < registro.size() ) {
-                for ( int i=0; i<qte; i++ ) {
-                    std::cout << registro[registro.size()-i];
+                std::cout << "menor \n";
+                    int xx;
+                for ( int i=0; i<(qte); i++ ) {
+                    xx = registro.size()-(i+1);
+                    std::cout << "aljfd " << xx << '\n';
+                    std::cout << registro[xx];
                 }
             }
             else {
-                /* for (auto e: registro) { */
+                std::cout << "maior \n";
                 for (auto e = registro.rbegin(); e != registro.rend(); ++e) {
                     std::cout << *e;
                 }
@@ -348,50 +334,35 @@ class UBS {
 UBS::UBS() {} ;
 
 Paciente pesquisar_paciente( std::vector<Paciente> pacientes_cadastrados , std::string cpf) {
-	/* std::cin >> cpf; */
-    /* std::cout << "procurando por " << cpf << std::endl; */
 	for (auto p : pacientes_cadastrados) {
 		if (p.get_cpf() == cpf) {
 			std::cout << p;
 			std::cout << "Os dados do paciente estão corretos?(sim/nao)" << std::endl;
 			std::string resp;
             getline(std::cin, resp);
-			/* std::cin >> resp; */
 			if (resp == "nao") {
                 throw std::invalid_argument(std::string("Paciente errado"));
-                /* return false; */
             }
             else if ( resp == "sim") {
                 return p;
             }
 		}
 	}
-    /* Paciente não encontrado */
-	/* return false; */
     throw std::invalid_argument(std::string("Paciente não encontrado"));
 }
 
 Paciente criar_paciente( std::string cpf ) {
     std::string n, nm, rg, ano;
-    /* int a_nasc; */
     std::cout << "Nome:" << std::endl;
     getline(std::cin, n);
-    /* std::cin >> n; */
     std::cout << "Nome da mãe:" << std::endl;
     getline(std::cin, nm);
-    /* std::cin >> nm; */
     std::cout << "RG:" << std::endl;
     getline(std::cin, rg);
-    /* std::cin >> rg; */
     std::cout << "CPF:" << cpf << std::endl;
-    /* getline(std::cin, cpf); */
-    /* std::cin >> cpf; */
     std::cout << "Ano de nascimento:" << std::endl;
     getline(std::cin, ano);
-    /* std::cin >> a_nasc; */
     try {
-        /* std::cout << "dados entrados" << std::endl; */
-        /* std::cout << n << std::endl;// << nm<< std::endl  << rg<< std::endl  << cpf<< std::endl  << ano << std::endl ; */
         Paciente pp(n, nm, rg, cpf, stoi(ano));
         return pp;
     }
@@ -438,24 +409,18 @@ int main(){
         std::cout << "0 - Finalizar operação" << std::endl;
         std::cout << " --- " << std::endl;
 		std::cout << "Digite a opção desejada:" << std::endl;
-		/* int a; */
         std::string a;
         getline(std::cin, a);
-		/* std::cin >> a; */
-        /* std::cout << "voce escolheu " << a << std::endl; */
         std::string cpf;
 		if (a == "1") {
             Paciente paciente;
             Requisicao req;
             try {
-                /* Paciente paciente; */
                 std::cout << "Digite o CPF do paciente:" << std::endl;
                 getline(std::cin, cpf);
                 paciente = pesquisar_paciente( pacientes_cadastrados, cpf);
             }
             catch(std::invalid_argument& e) {
-                /* Paciente novo; */
-                /* std::cout << e.code(); */
                 if ( e.what() == std::string("Paciente não encontrado" )) {
                     std::cout << "Paciente não cadastrado" << std::endl;
                     paciente = criar_paciente(cpf);
@@ -465,11 +430,9 @@ int main(){
                     continue;
                 }
             }
-            /* Requisicao rr(paciente, paciente.get_prioridade(), 0); */
 
             req = criar_requisicao(paciente);
             unidade.entrar_na_fila(req);
-            /* std::cout << rr; */
 		}
 		if (a == "2") {
             unidade.imprimir_fila();
@@ -478,7 +441,6 @@ int main(){
             std::cout << "Digite o cpf do paciente que deseja desistir da fila\n";
             std::string cpf;
             getline(std::cin, cpf);
-            /* auto r = unidade.get_requisicao(cpf); */
             auto s = unidade.find_position(cpf);
             unidade.print_requesicao(s);
             std::cout << "Confirmar desistência?(sim/nao)\n";
@@ -514,6 +476,7 @@ int main(){
             bool auth = false;
             auth = unidade.autenticar();
             if (auth) {
+                std::cout << "Digite quantos registros você deseja ver \n";
                 std::string qqq;
                 getline(std::cin, qqq);
                 unidade.listar_atendimentos(stoi(qqq));
@@ -526,7 +489,10 @@ int main(){
             bool auth = false;
             auth = unidade.autenticar();
             if (auth) {
-                unidade.listar_atendimentos(10);
+                std::cout << "Pacientes cadastrados nesta unidade: \n";
+                for (auto p: pacientes_cadastrados) {
+                    std::cout << p;
+                }
             }
             else {
                 std::cout << "Senha errada";
