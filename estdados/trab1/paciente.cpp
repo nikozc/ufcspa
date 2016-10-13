@@ -110,23 +110,27 @@ std::ostream & operator<<(std::ostream & os, Paciente & p)
 
 class Requisicao {
     private:
-        Paciente* paciente;
+        Paciente paciente;
         bool prioritaria;
         int especialidade;
     public:
         Requisicao();
         Requisicao( const Requisicao &obj);
         Requisicao( Paciente pac, bool p, int esp) {
-            paciente = &pac;
+            paciente = pac;
             prioritaria = p;
             especialidade = esp;
     }
         std::string get_nome_paciente() {
-            return paciente->get_nome();
+            return paciente.get_nome();
         }
 
         int get_id_especialidade() {
             return especialidade;
+        }
+
+        Paciente get_paciente() {
+            return paciente;
         }
 
         std::string get_nome_especialidade() {
@@ -146,7 +150,7 @@ class Requisicao {
         }
 
         std::string get_prioridade() {
-            if (paciente->get_prioridade() ) {
+            if (paciente.get_prioridade() ) {
                 return "Sim";
             }
             else {
@@ -155,7 +159,7 @@ class Requisicao {
         }
 
         std::string get_cpf_paciente() {
-            return paciente->get_cpf();
+            return paciente.get_cpf();
         }
 };
 Requisicao::Requisicao() {};
@@ -275,7 +279,8 @@ class UBS {
             }
         }
 
-        void chamar_paciente( int esp ) {
+        Requisicao chamar_paciente( int esp ) {
+        /* void chamar_paciente( int esp ) { */
             int cont =0;
             int pri =0;
             pri = contar_prioridades(esp);
@@ -289,8 +294,9 @@ class UBS {
                         std::cout << "Chamando paciente prioritário";
                         std::cout << e;
                         /* std::move(fila.begin()+(cont-1), fila.begin()+(cont), std::back_inserter(registro)); */
-                        auto qwe = Requisicao(fila[cont-1]);
-                        registro.push_back(qwe);
+                        Requisicao qwe = criar_requisicao(e.get_paciente(), e.get_id_especialidade());
+                        /* auto qwe = Requisicao(fila[cont-1]); */
+                        /* registro.push_back(qwe); */
                         fila.erase(fila.begin()+(cont-1));
                         /* registrar_atendimento(fila[cont-1]); */
                         /* fila.erase(fila.begin()+(cont-1)); */ 
@@ -301,11 +307,13 @@ class UBS {
                     std::cout << "chamando paciente \n";
                     std::cout << e;
                     /* std::move(fila.begin()+(cont), fila.begin()+(cont+1), std::back_inserter(registro)); */
-                    Requisicao qwe = Requisicao(fila[cont]);
-                    registro.push_back(qwe);
+                    /* Requisicao qwe = Requisicao(fila[cont]); */
+                    Requisicao qwe = criar_requisicao(e.get_paciente(), e.get_id_especialidade());
+                    /* registro.push_back(qwe); */
                     /* registrar_atendimento(fila[cont]); */
                     fila.erase(fila.begin()+cont); 
-                    break;
+                    return qwe;
+                    /* break; */
                 }
             }
         }
@@ -314,11 +322,15 @@ class UBS {
             registro.push_back( req );
         }
 
+        Requisicao criar_requisicao( Paciente pac, int esp ) {
+            return Requisicao (pac, pac.get_prioridade(), esp);
+        }
+
         void listar_atendimentos ( int qte ) {
-            std::cout << " listando atendimentos \n";
-            for ( auto r:registro) {
-                std::cout << r;
-            }
+            std::cout << "Listando os últimos " << qte << " atendimentos realizados.";
+            /* for ( auto r:registro) { */
+            /*     std::cout << r; */
+            /* } */
             if (qte < registro.size() ) {
                 for ( int i=0; i<qte; i++ ) {
                     std::cout << registro[registro.size()-i];
@@ -490,7 +502,9 @@ int main(){
                 std::cout << "0 - Triagem" << '\n';
                 std::string esp;
                 getline(std::cin, esp);
-                unidade.chamar_paciente(stoi(esp));
+                Requisicao rr;
+                rr = unidade.chamar_paciente(stoi(esp));
+                unidade.registrar_atendimento(rr);
             }
             else {
                 std::cout << "Senha errada";
@@ -500,7 +514,9 @@ int main(){
             bool auth = false;
             auth = unidade.autenticar();
             if (auth) {
-                unidade.listar_atendimentos(0);
+                std::string qqq;
+                getline(std::cin, qqq);
+                unidade.listar_atendimentos(stoi(qqq));
             }
             else {
                 std::cout << "Senha errada";
